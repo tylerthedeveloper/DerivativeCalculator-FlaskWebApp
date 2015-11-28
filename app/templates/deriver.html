@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+	<form action="" method="post" name="deriver">
+	{{ form.hidden_tag() }}
+		<p> Enter an expression to be derived 
+		{{ form.expression }} 
+		</p>
+		<p><input type="submit" value="Derive"> </p>
+	</form>
+	<p> The derivative is: <br>
+	 {% for der in derivatives %}
+    <p><b>{{ derivative }}</b></p></div>
+    {% endfor %}
+	</p>  
+{% endblock %}

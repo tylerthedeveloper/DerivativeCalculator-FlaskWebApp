@@ -1,0 +1,19 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Enter Information</h1>
+  <form action="" method="post" name="login">
+      {{ form.hidden_tag() }}
+      <p>
+          Enter a name<br>
+          {{ form.name }}<br>
+      </p>
+      <p>{{ form.remember_me }} Remember Me</p>
+      <p><input type="submit" value="Login"></p>
+
+      
+  </form>
+{% endblock %}
+
+<!-- Error handling: imrpoving field validation, step 3 -->

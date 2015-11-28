@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Hello, {{ user.nickname }}, welcome to my Derivative Calculator!</h1>
+	<h2> Are you a new user: <br>
+	If yes, click "sign up," if no, login below!" </h2>
+	
+  	<div>Login: <a href="/login">Login</a></div>
+
+  	<div>Signup: <a href="/signup">Signup</a></div>  
+
+{% endblock %}
