@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 	<h1>Hello, {{ user.nickname }}, welcome to my Derivative Calculator!</h1>
-	<h2> Are you a new user: <br>
-	If yes, click "sign up," if no, login below!" </h2>
 	
-	
-  	<div>Login: <a href="/login">Login</a></div>
-
+	{% if g.user.is_authenticated %}
+	<div> <h2> Lets Derive!: <a href="/deriver">Deriver</a> </h2></div>
+	{% else %}
+	<h2> Are you a new user: <br> If yes, click "sign up," if no, login!" </h2> <br>
+  	<div>Login: <a href="/login">Login</a></div><br>
   	<div>Signup: <a href="/signup">Signup</a></div>  
-
+	{% endif %}
 {% endblock %}
 
 <!-- <script type="text/javascript">

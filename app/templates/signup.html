@@ -4,11 +4,21 @@
    	<form action="" method="post" name="signup">
        {{ form.hidden_tag() }}
        <p>
-           Enter a new username<br>
-           {{ form.name }}<br>
+           Enter a new username {{ form.username }}<br>
+       </p>
+       <p>
+           Enter a new nickname {{ form.nickname }}<br>
+       </p>
+		<p>
+           You may enter an expression {{ form.expressions }}<br>
        </p>
        <p>{{ form.remember_me }} Remember Me</p>
        <p><input type="submit" value="signup"></p>
    </form>
    </div>
 {% endblock %}
+
+
+<!--        <p>
+           Enter a nickname {{ form.nickname }} <br>
+       </p> -->

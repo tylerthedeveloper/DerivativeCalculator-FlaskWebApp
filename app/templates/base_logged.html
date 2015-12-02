@@ -10,13 +10,8 @@
     <div>
     	Derivative Calculator: 
     	<a href="/index">Home</a> 
-    	<a href="/deriver">Deriver</a>
-    	{% if g.user.is_authenticated %}
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% else %}
-	    <a href="/login">Login</a>
-	    <a href="/signup">Signup</a>
-        {% endif %}
+    	<a href="/profile">Profile</a>
+    	<a href="/login">Logout</a>
     </div>
     
     <hr>

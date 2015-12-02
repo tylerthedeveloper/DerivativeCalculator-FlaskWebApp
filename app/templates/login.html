@@ -2,17 +2,31 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <script type="text/javascript">
+  	function set_username(username)
+  	{
+        u = .search('<username>');
+        if (u != -1) {
+            user = prompt('Enter your username:');
+        }
+        form = document.forms['login'];
+        form.elements['username'].value = username;
+    }
+    </script>
+    
   <h1>Enter Information</h1>
   <form action="" method="post" name="login">
       {{ form.hidden_tag() }}
       <p>
-          Enter a name<br>
-          {{ form.name }}<br>
+          Enter your username<br>
+          {{ form.username }}<br>
+      </p>
+      <p>
+          Enter your nickname <br>
+          {{ form.nickname }}<br>
       </p>
       <p>{{ form.remember_me }} Remember Me</p>
-      <p><input type="submit" value="Login"></p>
-
-      
+      <p><input type="submit" value="Sign In"></p>
   </form>
 {% endblock %}
 

@@ -2,25 +2,29 @@
 {% block content %}
 
 <script type="text/javascript">
-function disp_der(derivatives)
+function disp_der(expressions)
 {
-    form = document.forms['deriver'];
-    form.elements['expression'].value = derivative
+    form.elements['expression'].value = expression;
+    
 }
 
 </script>
 
 	<form action="" method="post" name="deriver">
 	{{ form.hidden_tag() }}
-		<p> Enter an expression to be derived 
-		{{ form.expression }} 
-		</p>
-		<p><input type="submit" value="Derive"> </p>
+		<p> Enter an expression to be derived
+		{{ form.expression }}
+		</p>		
+		<p> The derivative is: <br>
+			
+		<p>
+		<input type="submit" value="Derive"> </p>
+
 	</form>
 	
 	<p> The derivative is: <br>
 	{% for der in derivatives %}
- 	<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivative }}</a>	
+ 	<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivatives }}</a>	
     {% endfor %}
 
 {% endblock %}
@@ -35,3 +39,6 @@ table:
 
 <!-- derive(form.expression.data) -->
 <!-- need to get derivative after derived ... then input in form --!>
+<!-- {% for der in derivatives %}
+ 	<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivatives }}</a>	
+    {% endfor %} -->
