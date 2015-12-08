@@ -1,6 +1,8 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, BooleanField
+from wtforms import StringField, BooleanField #,FieldList
 from wtforms.validators import DataRequired
+#from wtforms_json import flatten_json
+#import wtforms_json
 
 # Super...
 # class Form(Form):
@@ -18,10 +20,15 @@ class SignupForm(Form):
     username = StringField('username', validators=[DataRequired()])
     nickname = StringField('nickname', validators=[DataRequired()])
     #pWord = StringField('pWord', validators=[DataRequired()])
-    remember_me = BooleanField('remember_me', default=False)
-    expressions = StringField('expressions', validators=[DataRequired()])
+    expressions = StringField('expressions')
 #   derivative = StringField('derivative') #listfield
 
 class EntryForm(Form):
-    expressions = StringField('expressions', validators=[DataRequired()])
-    derivative = StringField('derivative') #listfield
+    expression = StringField('expression', validators=[DataRequired()]) #FieldList
+    #derivative = StringField('derivative') #listfield
+    
+#wtforms_json.init()
+
+#form = SignupForm.from_json(json)
+
+#form = EntryForm.from_json()

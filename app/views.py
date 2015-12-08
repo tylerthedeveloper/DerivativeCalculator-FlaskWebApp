@@ -15,7 +15,6 @@ def before_request():
 
 @app.route('/')
 @app.route('/index', methods=['GET'])
-@login_required
 def index():
 	user = g.user
 	#if not logged in or if id exists ? :
@@ -27,12 +26,13 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	if g.user is not None and g.user.is_authenticated:
-		return redirect(url_for('index'))
-
+		return redirect(url_for('profile', id=id))
+		
 	form = LoginForm()
 	if form.validate_on_submit():
 		#name = form.username.data
 		user = User.query.filter_by(name=form.username.data).first()
+		id = user.id
 		#user_list = User.query.all()
 		if user:
 			remember_me = False
@@ -41,7 +41,9 @@ def login():
 				#session['remember_me'] = form.remember_me.data
 				session.pop('remember_me', None)
 			login_user(user, remember=remember_me)
-			return redirect(request.args.get('next') or url_for('index'))
+			return redirect(url_for('profile', id=id))
+			#return redirect(url_for('user', id=int('<id>')))
+			#return redirect(url_for('user', id=current_user.id))
 		#flash('You are logged in as %s and set remember me to: %s' %
 	return render_template('login.html', title='Sign In', form=form)
 
@@ -66,7 +68,7 @@ def signup():
         pack = User(username, nickname, expressions) #, derivatives) , #derivatives) 
         db.session.add(pack)
         db.session.commit()
-        flash('Log in with your username and nickname of %s and %s' % (form.username.data, form.nickname.data))
+        flash('Log in with your username %s and nickname %s' % (form.username.data, form.nickname.data))
     	return redirect(url_for('login')) #jsonify(user.report())  #id = int(User.id))
         #render_template('user.html', openid = form.openid.data, title='signup', form=form)
         #return jsonify(user.report())
@@ -76,38 +78,78 @@ def signup():
 		#return redirect('/index') --> /index/user/<int:id:>
 	return render_template('signup.html', title='signup', form=form)
 
+#@app.route('/user', methods=['GET'])
+# @login_required
+# def list_users(): #list all..
+# 	if request.method == 'GET':
+# 		user_list = User.query.all()
+# 		report = [user.__repr__() for user in user_list]		
+# 		return jsonify(users = report), 200
+# 		
+# @app.route('/user/<int:id>', methods=['GET', 'POST'])
+# @login_required
+# def user(id): #id
+# 	this_user = User.query.get(id)
+# 	if request.method == 'GET':
+# 		report = this_user.__repr__()
+# 		return jsonify(report), 200
+# 
+# 	elif request.method == 'POST':
+# 		expressions = form.expressions.data #request.json.get('expressions')
+# 		e = User(expressions) #update/insert
+# 		db.session.add(e)
+# 		db.session.commit()
+# 		return ('', 200)
+# 
+# 	return render_template('signup.html', title='signup', form=form)
+
 @app.route('/user', methods=['GET'])
-@login_required
 def list_users(): #list all..
-	if request.method == 'GET':
+	#if request.method == 'GET':
 		user_list = User.query.all()
 		report = [user.__repr__() for user in user_list]		
 		return jsonify(users = report), 200
-		
-@app.route('/user/<int:id>', methods=['GET', 'POST'])
-@login_required
+
+@app.route('/user/<int:id>', methods=['GET'])
 def user(id): #id
+	this_user = User.query.get(id)
 	if request.method == 'GET':
-		this_user = User.query.get(id)
 		report = this_user.__repr__()
 		return jsonify(report), 200
 
-	elif request.method == 'POST':
-		expressions = form.expressions.data #request.json.get('expressions')
-		e = User(expressions) #update/insert
-		db.session.add(e)
-		db.session.commit()
-		return ('', 200)
 
-	return render_template('signup.html', title='signup', form=form)
 
-@app.route('/deriver', methods=['GET', 'POST'])	#user/<int:id:>
+@app.route('/user/<int:id>/profile', methods=['GET', 'POST'])
+def profile(id):
+	user = g.user
+	id = user.get_id()
+	req = request.data
+	if req:
+		return render_template('deriver.html', title='deriver', user=user, form=form)
+	#request.data
+	#return redirect(url_for('profile',  id=id))
+	#return redirect(request.values.get('next') or url_for('derive'))
+	return render_template('user.html', title='profile', user=user, id=id)
+
+ 	
+@app.route('/user/<int:id>/deriver', methods=['GET', 'POST'])
 @login_required
-def enterData():
+def deriver(id):
+	user = g.user
  	form = EntryForm()
- 	if form.validate_on_submit():
- 		derivative = derive(form.expression.data)
- 		flash('Expression %s has the derivative of %s' % (form.expression.data, derivative)) 
-	 	return ('/deriver')
- 	return render_template('deriver.html', title='deriver', form=form)
-	#derivatives=derivatives
+ 	#form = EntryForm.from_json(request.json)	
+	if request.method == 'POST':
+		#from_json
+		#expression = form.expression.data
+		#user.add_expressions(expression)
+		#user.add_derivatives(derivative)
+		#e = User(expression, derivative) #update/insert
+		#e = User(name=name, nickname=nickname, expression, derivative)
+		#db.session.add(e)
+		derivative = derive(form.expression.data)
+		user.derivatives+=(str(derivative))
+		user.expressions+=(form.expression.data)
+		db.session.commit()
+		#('', 200),
+		return render_template('deriver.html', title='deriver', user=user, form=form)
+	return render_template('deriver.html', title='deriver', user=user, form=form)

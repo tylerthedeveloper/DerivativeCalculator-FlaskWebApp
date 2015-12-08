@@ -1,32 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-
 <script type="text/javascript">
-function disp_der(expressions)
+function func2() 
 {
-    form.elements['expression'].value = expression;
-    
+	document.getElementById("der").innerHTML = {{ derivative }};
+	alert("Submit button clicked!");
+	return false;
 }
+//<!--	document.getElementById('deriver').submit(); -->
 
 </script>
 
-	<form action="" method="post" name="deriver">
+	<h1>Hello, {{ user.nickname }}, lets derive!</h1>
+
+	<form id="deriver" onsubmit="func2();" action="" method="post" > <!-- name="deriver" -->
 	{{ form.hidden_tag() }}
-		<p> Enter an expression to be derived
-		{{ form.expression }}
-		</p>		
-		<p> The derivative is: <br>
-			
-		<p>
-		<input type="submit" value="Derive"> </p>
-
+		<p> Enter an expression to be derived <p id="exp">{{ form.expression }}</p> </p>		
+		<input type="submit" method="post" value="Derive"> <!--onclick="func2();"-->
 	</form>
+	<p> The derivative is: <p id="der"> hi </p>	</p>
+	<p>	{{ form.derivative }}</p>
+	<div>
+	{% for der in derivative %}
+	{{ der.derivative }}
+	{% endfor %}
+	</div>
 	
-	<p> The derivative is: <br>
-	{% for der in derivatives %}
- 	<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivatives }}</a>	
-    {% endfor %}
-
 {% endblock %}
 
 <!--
@@ -39,6 +38,4 @@ table:
 
 <!-- derive(form.expression.data) -->
 <!-- need to get derivative after derived ... then input in form --!>
-<!-- {% for der in derivatives %}
- 	<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivatives }}</a>	
-    {% endfor %} -->
+ 	<!--<a href="javascript:disp_der('{{ der.derivative }}');">{{ der.derivatives }}</a>-->	
