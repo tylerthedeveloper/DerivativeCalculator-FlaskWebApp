@@ -20,7 +20,7 @@ class SignupForm(Form):
     username = StringField('username', validators=[DataRequired()])
     nickname = StringField('nickname', validators=[DataRequired()])
     #pWord = StringField('pWord', validators=[DataRequired()])
-    expressions = StringField('expressions')
+    #expressions = StringField('expressions')
 #   derivative = StringField('derivative') #listfield
 
 class EntryForm(Form):

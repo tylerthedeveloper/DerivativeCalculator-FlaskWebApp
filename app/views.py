@@ -63,9 +63,9 @@ def signup():
 		username = form.username.data #request.json.get('username')
 		nickname = form.nickname.data #request.json.get('nickname')
 		#rMData = form.rMData.data #request.json.get('rMData')
-		expressions = form.expressions.data #request.json.get('expressions')
+		#expressions = form.expressions.data #request.json.get('expressions')
 #       derivatives = ''
-        pack = User(username, nickname, expressions) #, derivatives) , #derivatives) 
+        pack = User(username, nickname) #, derivatives) , #derivatives) 
         db.session.add(pack)
         db.session.commit()
         flash('Log in with your username %s and nickname %s' % (form.username.data, form.nickname.data))
@@ -103,6 +103,8 @@ def signup():
 # 
 # 	return render_template('signup.html', title='signup', form=form)
 
+
+#add admin auth
 @app.route('/user', methods=['GET'])
 def list_users(): #list all..
 	#if request.method == 'GET':
@@ -110,6 +112,8 @@ def list_users(): #list all..
 		report = [user.__repr__() for user in user_list]		
 		return jsonify(users = report), 200
 
+
+#add admin auth
 @app.route('/user/<int:id>', methods=['GET'])
 def user(id): #id
 	this_user = User.query.get(id)
@@ -140,16 +144,17 @@ def deriver(id):
  	#form = EntryForm.from_json(request.json)	
 	if request.method == 'POST':
 		#from_json
-		#expression = form.expression.data
-		#user.add_expressions(expression)
-		#user.add_derivatives(derivative)
+		user.add_expressions(form.expression.data)
+		derivative = derive(form.expression.data)
+		user.add_derivatives(derivative)
+		db.session.commit()
 		#e = User(expression, derivative) #update/insert
 		#e = User(name=name, nickname=nickname, expression, derivative)
 		#db.session.add(e)
-		derivative = derive(form.expression.data)
-		user.derivatives+=(str(derivative))
-		user.expressions+=(form.expression.data)
-		db.session.commit()
+		#user.derivatives+=(str(derivative))
+		#user.expressions+=(form.expression.data)
+		#db.session.query(User).filter(User.id ==
+
 		#('', 200),
 		return render_template('deriver.html', title='deriver', user=user, form=form)
 	return render_template('deriver.html', title='deriver', user=user, form=form)

@@ -20,15 +20,17 @@ class User(db.Model):
 		self.expressions = expressions
 		self.derivatives = derivatives
 	
-# 	def add_expressions(self, expression):
-# 		self.expressions.append(expression)
-# 		db.session.query(User).filter(User.id == self.id)\
-#                 .update({"expressions": self.expressions})
-# 		db.session.commit()
-# 
-# 	def add_derivatives(self, derivatives):
-# 		self.derivatives.append(derivatives)
-# 		db.session.commit()
+	def add_expressions(self, expression):
+		self.expressions.append(expression)
+		db.session.query(User).filter(User.id == self.id)\
+                .update({"expressions": self.expressions})
+		db.session.commit()
+		
+	def add_derivatives(self, derivatives):
+		self.derivatives.append(derivatives)
+		db.session.query(User).filter(User.id == self.id)\
+                .update({"derivatives": self.derivatives})
+		db.session.commit()
 	
 	@property
 	def is_authenticated(self):
