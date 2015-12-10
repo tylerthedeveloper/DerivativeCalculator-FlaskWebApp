@@ -3,9 +3,11 @@
 <script type="text/javascript">
 function func2() 
 {
-	document.getElementById("der").innerHTML = {{ derivative }};
-	alert("Submit button clicked!");
-	return false;
+	document.getElementById("der").innerHTML = "hello";
+			// {{ derivative }}
+	alert("Submit button .... !");
+	document.getElementById("deriver").submit();
+	return true;
 }
 //<!--	document.getElementById('deriver').submit(); -->
 
@@ -13,18 +15,21 @@ function func2()
 
 	<h1>Hello, {{ user.nickname }}, lets derive!</h1>
 
-	<form id="deriver" onsubmit="func2();" action="" method="post" > <!-- name="deriver" -->
+	<form id="deriver" method="post" action="" > <!-- name="deriver"  action="" onsubmit="return func2()" -->
 	{{ form.hidden_tag() }}
-		<p> Enter an expression to be derived <p id="exp">{{ form.expression }}</p> </p>		
-		<input type="submit" method="post" value="Derive"> <!--onclick="func2();"-->
+		<p> Enter an expression to be derived <p id="exp"> {{ form.expression }} </p> </p>		
+		<input type="submit" onclick="func2()" method="post" value="Derive"> <!--onclick="func2();"-->
 	</form>
-	<p> The derivative is: <p id="der"> hi </p>	</p>
-	<p>	{{ form.derivative }}</p>
-	<div>
+
+	<!-- 
+		<p> The derivative is: {{ derivative }}	</p> 
+	<p>		<p id="der"> 
 	{% for der in derivative %}
-	{{ der.derivative }}
+		{{ derivative }} 
 	{% endfor %}
-	</div>
+	</p>
+ </p> <br> -->
+	
 	
 {% endblock %}
 
