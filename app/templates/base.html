@@ -5,6 +5,8 @@
     {% else %}
     <title>Welcome to my Derivative Calculator</title>
     {% endif %}
+    
+  
   </head>
   <body>
     <div>
@@ -21,6 +23,7 @@
     </div>
     
     <hr>
+    {% block content %}{% endblock %}
     {% with messages = get_flashed_messages() %}
     	{% if messages %}
     	<ul>
@@ -30,6 +33,8 @@
     	</ul>
     	{% endif %}
     {% endwith %}
-    {% block content %}{% endblock %}
+
+    </div>
+    
   </body>
 </html>

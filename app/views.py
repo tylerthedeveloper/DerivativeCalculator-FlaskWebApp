@@ -146,10 +146,15 @@ def deriver(id):
 		if form.validate_on_submit():
 		#from_json
 			user.add_expressions(form.expression.data)
-			derivative = str(derive(form.expression.data))
-			flash('The derivative is %r: ' % derivative)
+			derivative = derive(form.expression.data)
+			flash('The expression of %s has a derivative of %r: ' % \
+			(form.expression.data, derivative))
 			user.add_derivatives(derivative)
 			db.session.commit()
+			form.expression.data = None
+			return render_template('deriver.html', title='deriver', user=user, \
+					form=form)
+#			form.reset()
 			#return ('', 200)
 		#e = User(expression, derivative) #update/insert
 		#e = User(name=name, nickname=nickname, expression, derivative)
@@ -157,7 +162,4 @@ def deriver(id):
 		#user.derivatives+=(str(derivative))
 		#user.expressions+=(form.expression.data)
 		#db.session.query(User).filter(User.id ==
-
-		return render_template('deriver.html', title='deriver', user=user, \
-			form=form)
 	return render_template('deriver.html', title='deriver', user=user, form=form)
